@@ -1,0 +1,8 @@
+.
+├── admin.py
+├── models.py
+├── project_structure.txt
+├── settings.py
+└── zadani_project.txt
+
+1 directory, 5 files
