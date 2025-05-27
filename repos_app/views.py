@@ -4,6 +4,24 @@ from django.shortcuts import render, get_object_or_404, redirect
 from repos_app.forms import RepositoryForm
 from repos_app.models import Repository
 
+
+# repos_app/views.py
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('repos_app:repo_list')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+
 # --------------------------------------
 #           CRUD operations
 # --------------------------------------
@@ -36,6 +54,7 @@ def repo_create(request):
 
 
 # podbne create, instace=repo -> django vi ze pracujem s jiz existujicim zazname,
+@login_required
 def repo_update(request, pk):
     repo = get_object_or_404(Repository, pk=pk, owner=request.user)
     if request.method == 'POST':

@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+#SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-OS-qVRwk4sBq4sf2--DZ23UurC7ef4_K5GaGWW__OSFSYQ3QBPRxCbw0NXibmDldqXw'
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4" style="max-width:400px">
+  <h2>Sign Up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Create Account</button>
+  </form>
+  <p class="mt-3">
+    Already have an account?
+    <a href="{% url 'login' %}?next={{ request.GET.next }}">Log in</a>
+  </p>
+</div>
+{% endblock %}
