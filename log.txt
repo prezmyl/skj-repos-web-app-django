@@ -1,0 +1,12 @@
+  c = Context(self.get_traceback_data(), use_l10n=False)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xpolas/banska/skj/repos/.venv/lib/python3.12/site-packages/django/views/debug.py", line 397, in get_traceback_data
+    "settings": self.filter.get_safe_settings(),
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xpolas/banska/skj/repos/.venv/lib/python3.12/site-packages/django/views/debug.py", line 156, in get_safe_settings
+    settings_dict[k] = self.cleanse_setting(k, getattr(settings, k))
+                                               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/xpolas/banska/skj/repos/.venv/lib/python3.12/site-packages/django/conf/__init__.py", line 90, in __getattr__
+    raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+[27/May/2025 12:47:13] "GET /favicon.ico HTTP/1.1" 500 59

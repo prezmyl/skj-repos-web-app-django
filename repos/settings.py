@@ -3,6 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,6 +34,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# to tell django where muj project-level urls.py zije
+ROOT_URLCONF = 'repos.urls'
+
+# WSGI/ASGI applikacni entry points
+WSGI_APPLICATION = 'repos.wsgi.application'
+ASGI_APPLICATION = 'repos.asgi.application'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -51,3 +59,5 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+# Use BigAutoField (64-bit) as the default primary key type instead of AutoField (32-bit)
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

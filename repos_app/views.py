@@ -12,13 +12,13 @@ from repos_app.models import Repository
 @login_required
 def repo_list(request):
     repos = Repository.objects.filter(owner=request.user)
-    return render(request, 'templates/repos_app/repo_list.html', {'repos': repos})
+    return render(request, 'repos_app/repo_list.html', {'repos': repos})
 
 # nacte konkretni repo pokud exists
 @login_required
 def repo_detail(request, pk):
     repo = get_object_or_404(Repository, pk=pk, owner=request.user)
-    return render(request, 'templates/repos_app/repo_detail.html', {'repo': repo})
+    return render(request, 'repos_app/repo_detail.html', {'repo': repo})
 
 # GET zobrazi prazdny formular, POST naplni form daty z request
 @login_required
