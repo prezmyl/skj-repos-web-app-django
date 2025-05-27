@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>
+    {% if repo %}Edit Repository{% else %}New Repository{% endif %}
+  </h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+      {% if repo %}Save Changes{% else %}Create Repository{% endif %}
+    </button>
+    <a class="btn btn-link" href="{% url 'repos_app:repo_list' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

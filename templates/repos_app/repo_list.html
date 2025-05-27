@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>My Repositories</h1>
+  <a class="btn btn-primary mb-3" href="{% url 'repos_app:repo_create' %}">New Repository</a>
+  <ul class="list-group">
+    {% for repo in repos %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'repos_app:repo_detail' repo.pk %}">{{ repo.name }}</a>
+        <span>
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'repos_app:repo_update' repo.pk %}">Edit</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'repos_app:repo_delete' repo.pk %}">Delete</a>
+        </span>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No repositories yet</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

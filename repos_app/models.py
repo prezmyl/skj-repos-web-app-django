@@ -2,14 +2,17 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()
 
+# kazda trioda predstavuju jednu tabulku v db
+
 class Repository(models.Model):
-    owner       = models.ForeignKey(User, on_delete=models.CASCADE, related_name='repositories')
-    name        = models.CharField(max_length=100)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='repositories')
+    name = models.CharField(max_length=120)
     description = models.TextField(blank=True)
-    is_private  = models.BooleanField(default=False)
-    created_at  = models.DateTimeField(auto_now_add=True)
+    is_private = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('owner', 'name')

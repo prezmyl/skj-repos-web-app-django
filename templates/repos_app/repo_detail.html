@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>{{ repo.name }}</h1>
+  <p>{{ repo.description|linebreaks }}</p>
+  <p>
+    <strong>Private:</strong>
+    {{ repo.is_private|yesno:"Yes,No" }}
+  </p>
+  <p><em>Created at {{ repo.created_at }}</em></p>
+  <a class="btn btn-secondary" href="{% url 'repos_app:repo_update' repo.pk %}">Edit</a>
+  <a class="btn btn-danger" href="{% url 'repos_app:repo_delete' repo.pk %}">Delete</a>
+  <a class="btn btn-link" href="{% url 'repos_app:repo_list' %}">Back to list</a>
+</div>
+{% endblock %}

@@ -1,8 +1,28 @@
 .
-├── admin.py
-├── models.py
+├── ERD
+├── github_url.txt
 ├── project_structure.txt
-├── settings.py
+├── repos
+│   ├── settings.py
+│   └── urls.py
+├── repos_app
+│   ├── admin.py
+│   ├── forms.py
+│   ├── migrations
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
+├── static
+│   ├── css
+│   ├── images
+│   └── js
+├── templates
+│   ├── base.html
+│   └── repos_app
+│       ├── repo_delete.html
+│       ├── repo_detail.html
+│       ├── repo_form.html
+│       └── repo_list.html
 └── zadani_project.txt
 
-1 directory, 5 files
+10 directories, 16 files
