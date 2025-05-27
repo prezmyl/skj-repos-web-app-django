@@ -12,6 +12,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'repos_app',            # my app
 ]
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
