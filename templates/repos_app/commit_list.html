@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Commits for {{ repo.name }}</h2>
+
+  <a class="btn btn-primary mb-3"
+     href="{% url 'repos_app:commit_create' repo.pk %}">
+    New Commit
+  </a>
+
+  <ul class="list-group">
+    {% for c in commits %}
+      <li class="list-group-item">
+        <a href="{% url 'repos_app:commit_detail' repo_pk=repo.pk hash=c.hash %}">
+          {{ c.hash|slice:":7" }} – {{ c.message }}
+        </a>
+        <small class="text-muted float-end">
+          {{ c.timestamp|date:"Y-m-d H:i" }}
+        </small>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No commits yet</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

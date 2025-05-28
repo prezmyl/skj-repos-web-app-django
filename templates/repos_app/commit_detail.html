@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Commit {{ commit.hash }}</h2>
+  <p><strong>Message:</strong> {{ commit.message }}</p>
+  <p><strong>Author:</strong> {{ commit.author.username }}</p>
+  <p><strong>When:</strong> {{ commit.timestamp }}</p>
+  <a class="btn btn-link" href="{% url 'repos_app:commit_list' repo_pk=commit.repository.pk %}">
+    ← Back to commits
+  </a>
+{% endblock %}
