@@ -17,6 +17,16 @@ INSTALLED_APPS = [
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
 
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+# pro produkcni server -> tady se to zkopiruje
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -58,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+
+
 # Use BigAutoField (64-bit) as the default primary key type instead of AutoField (32-bit)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

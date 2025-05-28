@@ -48,9 +48,10 @@ def repo_create(request):
             repo.owner = request.user
             repo.save()
             return redirect( 'repos_app/repo_detail', pk=repo.pk)
-        else:
-            form = RepositoryForm()
-        return render(request, 'repos_app/repo_form.html', {'form': form})
+    else:
+        form = RepositoryForm()
+
+    return render(request, 'repos_app/repo_form.html', {'form': form})
 
 
 # podbne create, instace=repo -> django vi ze pracujem s jiz existujicim zazname,
