@@ -102,22 +102,30 @@ def commit_create(request, repo_pk):
         form = CommitForm(request.POST)
         if form.is_valid():
             commit = form.save(commit=False)
-            commit.repo = repo
+            commit.repository = repo
+            commit.author = request.user
             commit.save()
-            return redirect('repos_app:commit_detail', repo_pk=repo_pk, hash=commit.hash)
+            return redirect('repos_app:commit_detail',
+                            repo_pk=repo_pk,
+                            hash=commit.hash)
     else:
         form = CommitForm()
 
-    return render(request, 'repos_app/commit_detail.html', {'form': form, 'repo': repo})
+    return render(request,
+                  'repos_app/commit_form.html',
+                  {'form': form, 'repo': repo})
 
 @login_required
 def commit_detail(request, repo_pk, hash):
     commit = get_object_or_404(Commit, hash=hash)
-    return render(request, 'repos_app/commit_detail.html', {'commit': commit})
+    return render(request, 'repos_app/commit_detail.html',
+                  {'commit': commit})
 
 
 
-
+# ------------------------------------------
+#           API calls -> machine readable endpoints
+# ------------------------------------------
 
 @login_required
 def api_repos_list(request):

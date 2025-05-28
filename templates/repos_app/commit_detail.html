@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container mt-4">
   <h2>Commit {{ commit.hash }}</h2>
-  <p><strong>Message:</strong> {{ commit.message }}</p>
-  <p><strong>Author:</strong> {{ commit.author.username }}</p>
-  <p><strong>When:</strong> {{ commit.timestamp }}</p>
-  <a class="btn btn-link" href="{% url 'repos_app:commit_list' repo_pk=commit.repository.pk %}">
-    ← Back to commits
-  </a>
+  <div class="row">
+    <div class="col-md-8">
+      <dl class="row">
+        <dt class="col-sm-3">Message</dt>
+        <dd class="col-sm-9">{{ commit.message }}</dd>
+
+        <dt class="col-sm-3">Author</dt>
+        <dd class="col-sm-9">{{ commit.author.username }}</dd>
+
+        <dt class="col-sm-3">When</dt>
+        <dd class="col-sm-9">{{ commit.timestamp|date:"M j, Y, P" }}</dd>
+      </dl>
+      <a class="btn btn-link"
+         href="{% url 'repos_app:commit_list' repo_pk=commit.repository.pk %}">
+        ← Back to commits
+      </a>
+    </div>
+  </div>
+</div>
 {% endblock %}

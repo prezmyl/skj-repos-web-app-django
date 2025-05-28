@@ -1,24 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container mt-4">
   <h2>Commits for {{ repo.name }}</h2>
-
   <a class="btn btn-primary mb-3"
      href="{% url 'repos_app:commit_create' repo.pk %}">
     New Commit
   </a>
-
   <ul class="list-group">
     {% for c in commits %}
-      <li class="list-group-item">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
         <a href="{% url 'repos_app:commit_detail' repo_pk=repo.pk hash=c.hash %}">
           {{ c.hash|slice:":7" }} – {{ c.message }}
         </a>
-        <small class="text-muted float-end">
-          {{ c.timestamp|date:"Y-m-d H:i" }}
-        </small>
+        <small class="text-muted">{{ c.timestamp|date:"Y-m-d H:i" }}</small>
       </li>
     {% empty %}
       <li class="list-group-item">No commits yet</li>
     {% endfor %}
   </ul>
+</div>
 {% endblock %}
