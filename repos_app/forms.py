@@ -1,5 +1,5 @@
 from django import forms
-from .models import Repository
+from .models import Repository, Commit
 
 
 # --------------------------------------
@@ -13,3 +13,9 @@ class RepositoryForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3}),
         }
+
+class CommitForm(forms.ModelForm):
+    class Meta:
+        model = Commit
+        fields = ['message','hash']
+
