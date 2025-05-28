@@ -47,7 +47,7 @@ def repo_create(request):
             repo = form.save(commit=False)
             repo.owner = request.user
             repo.save()
-            return redirect( 'repos_app/repo_detail', pk=repo.pk)
+            return redirect( 'repos_app:repo_detail', pk=repo.pk)
     else:
         form = RepositoryForm()
 
@@ -62,7 +62,7 @@ def repo_update(request, pk):
         form = RepositoryForm(request.POST, instance=repo)
         if form.is_valid():
             form.save()
-            return redirect( 'repos_app/repo_detail', pk=repo.pk)
+            return redirect( 'repos_app:repo_detail', pk=repo.pk)
     else:
         form = RepositoryForm(instance=repo)
     return render(request, 'repos_app/repo_form.html', {'form': form, 'repo': repo})
@@ -76,7 +76,7 @@ def repo_delete(request, pk):
     repo = get_object_or_404(Repository,pk=pk, owner=request.user)
     if request.method == 'POST':
         repo.delete()
-        return redirect( 'repos_app/repo_list')
+        return redirect( 'repos_app:repo_list')
     return render(request, 'repos_app/repo_delete.html', {'repo': repo})
 
 
