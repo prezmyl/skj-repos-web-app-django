@@ -1,4 +1,27 @@
 {% extends "base.html" %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_list' %}">My Repositories</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_detail' pk=repo.pk %}">{{ repo.name }}</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:commit_list' repo_pk=repo.pk %}">Commits</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      {% if commit %}
+        Edit Commit {{ commit.hash|slice:":7" }}
+      {% else %}
+        New Commit
+      {% endif %}
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
   <h2>New Commit in {{ repo.name }}</h2>

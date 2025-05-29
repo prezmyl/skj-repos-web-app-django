@@ -148,9 +148,12 @@ def commit_create(request, repo_pk):
 
 @login_required
 def commit_detail(request, repo_pk, hash):
-    commit = get_object_or_404(Commit, hash=hash)
+    commit = get_object_or_404(Commit, hash=hash,
+                               repository__pk=repo_pk,
+                               repository__owner=request.user)
+    repo = commit.repository
     return render(request, 'repos_app/commit_detail.html',
-                  {'commit': commit})
+                  {'commit': commit, 'repo': repo})
 
 
 
