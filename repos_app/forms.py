@@ -1,5 +1,5 @@
 from django import forms
-from .models import Repository, Commit, Issue, Label
+from .models import Repository, Commit, Issue, Label, Comment
 
 
 # --------------------------------------
@@ -14,10 +14,12 @@ class RepositoryForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 3}),
         }
 
+
 class CommitForm(forms.ModelForm):
     class Meta:
         model = Commit
         fields = ['message','hash']
+
 
 class IssueForm(forms.ModelForm):
     class Meta:
@@ -27,3 +29,11 @@ class IssueForm(forms.ModelForm):
             'labels': forms.CheckboxSelectMultiple,
         }
 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3}),
+        }

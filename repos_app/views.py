@@ -1,7 +1,7 @@
-from repos_app.forms import RepositoryForm, IssueForm
-from repos_app.forms import CommitForm
-from repos_app.models import Commit
-from .models import Repository, Issue
+
+from repos_app.forms import CommitForm, RepositoryForm, CommentForm, IssueForm
+from repos_app.models import Commit, Repository, Issue, Comment
+from .models import Repository, Issue, Comment
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -140,6 +140,7 @@ def issue_list(request, repo_pk):
         'issues': issues,
     })
 
+
 @login_required
 def issue_detail(request, repo_pk, pk):
     issue = get_object_or_404(
@@ -148,10 +149,33 @@ def issue_detail(request, repo_pk, pk):
         repository__pk=repo_pk,
         repository__owner=request.user
     )
+
+    # handle comment submission
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            cm = comment_form.save(commit=False)
+            cm.issue = issue
+            cm.author = request.user
+            cm.save()
+            return redirect(
+                'repos_app:issue_detail',
+                repo_pk=repo_pk,
+                pk=pk
+            )
+    else:
+        comment_form = CommentForm()
+
+    # fetch all comments, oldest first
+    comments = issue.comments.order_by('created_at')
+
     return render(request, 'repos_app/issue_detail.html', {
         'repo': issue.repository,
         'issue': issue,
+        'comments': comments,
+        'comment_form': comment_form,
     })
+
 
 @login_required
 def issue_create(request, repo_pk):

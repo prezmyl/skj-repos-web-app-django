@@ -34,6 +34,8 @@
         <dd class="col-sm-9">{{ issue.updated_at }}</dd>
       </dl>
 
+
+
       <a class="btn btn-secondary"
          href="{% url 'repos_app:issue_update' repo_pk=repo.pk pk=issue.pk %}">
         Edit
@@ -46,6 +48,34 @@
          href="{% url 'repos_app:issue_list' repo_pk=repo.pk %}">
         Back to issues
       </a>
+
+
+      {# ─── Comments Section ───────────────────────────── #}
+      <hr>
+      <h3>Comments</h3>
+      <ul class="list-group mb-4">
+        {% for comment in comments %}
+          <li class="list-group-item">
+            <p>{{ comment.content|linebreaks }}</p>
+            <small class="text-muted">
+              By {{ comment.author.username }} on {{ comment.created_at|date:"M j, Y H:i" }}
+            </small>
+          </li>
+        {% empty %}
+          <li class="list-group-item">No comments yet.</li>
+        {% endfor %}
+      </ul>
+
+      <h4>Add a comment</h4>
+      <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" class="btn btn-primary">Post Comment</button>
+        
+      </form>
+      {# ───────────────────────────────────────────────────── #}
+
+
     </div>
   </div>
 </div>
