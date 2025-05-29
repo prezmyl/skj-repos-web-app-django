@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_list' %}">My Repositories</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_detail' pk=repo.pk %}">{{ repo.name }}</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:pr_list' repo_pk=repo.pk %}">Pull Requests</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      Delete PR #{{ pr.pk }}
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h1>Confirm Delete</h1>
+  <p>
+    Are you sure you want to delete pull request
+    “<strong>{{ pr.title }}</strong>” in
+    repository “<strong>{{ repo.name }}</strong>”?
+  </p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a class="btn btn-link"
+       href="{% url 'repos_app:pr_detail' repo_pk=repo.pk pk=pr.pk %}">
+      Cancel
+    </a>
+  </form>
+</div>
+{% endblock %}

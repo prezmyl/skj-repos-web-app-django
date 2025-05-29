@@ -1,7 +1,15 @@
 
-from repos_app.forms import CommitForm, RepositoryForm, CommentForm, IssueForm, RepoSearchForm, CommitFilterForm
+
+
+from repos_app.forms import (CommitForm,
+                             RepositoryForm,
+                             CommentForm,
+                             IssueForm,
+                             RepoSearchForm,
+                             CommitFilterForm,
+                             PullRequestForm)
 from repos_app.models import Commit, Repository, Issue, Comment
-from .models import Repository, Issue, Comment
+from .models import Repository, Issue, Comment, PullRequest
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -268,6 +276,101 @@ def issue_delete(request, repo_pk, pk):
         'issue': issue,
     })
 
+# ------------------------------------------
+#           CRUD operations for Pull Request
+# ------------------------------------------
+
+
+@login_required
+def pr_list(request, repo_pk):
+    repo = get_object_or_404(Repository, pk=repo_pk, owner=request.user)
+    prs = repo.pull_requests.order_by('-created_at')
+    return render(request, 'repos_app/pr_list.html', {
+        'repo': repo,
+        'prs':  prs,
+    })
+
+@login_required
+def pr_create(request, repo_pk):
+    repo = get_object_or_404(Repository, pk=repo_pk, owner=request.user)
+    if request.method == 'POST':
+        form = PullRequestForm(request.POST)
+        if form.is_valid():
+            pr = form.save(commit=False)
+            pr.repository = repo
+            pr.author     = request.user
+            pr.save()
+            form.save_m2m()
+            return redirect('repos_app:pr_detail', repo_pk=repo.pk, pk=pr.pk)
+    else:
+        form = PullRequestForm()
+    return render(request, 'repos_app/pr_form.html', {
+        'repo': repo,
+        'form': form,
+    })
+
+@login_required
+def pr_detail(request, repo_pk, pk):
+    pr = get_object_or_404(
+        PullRequest,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    return render(request, 'repos_app/pr_detail.html', {
+        'repo': pr.repository,
+        'pr':   pr,
+    })
+
+@login_required
+def pr_merge(request, repo_pk, pk):
+    pr = get_object_or_404(
+        PullRequest,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    if request.method == 'POST':
+        pr.is_merged = True
+        pr.save()
+    return redirect('repos_app:pr_detail', repo_pk=repo_pk, pk=pk)
+
+@login_required
+def pr_update(request, repo_pk, pk):
+    pr = get_object_or_404(
+        PullRequest,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    if request.method == 'POST':
+        form = PullRequestForm(request.POST, instance=pr)
+        if form.is_valid():
+            form.save()
+            return redirect('repos_app:pr_detail', repo_pk=repo_pk, pk=pk)
+    else:
+        form = PullRequestForm(instance=pr)
+    return render(request, 'repos_app/pr_form.html', {
+        'repo': pr.repository,
+        'form': form,
+        'pr':   pr,
+    })
+
+@login_required
+def pr_delete(request, repo_pk, pk):
+    pr = get_object_or_404(
+        PullRequest,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    if request.method == 'POST':
+        pr.delete()
+        return redirect('repos_app:pr_list', repo_pk=repo_pk)
+    return render(request, 'repos_app/pr_delete.html', {
+        'repo': pr.repository,
+        'pr':   pr,
+    })
 
 
 

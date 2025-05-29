@@ -1,5 +1,5 @@
 from django import forms
-from .models import Repository, Commit, Issue, Label, Comment
+from .models import Repository, Commit, Issue, Label, Comment, PullRequest
 
 
 # --------------------------------------
@@ -39,6 +39,25 @@ class CommentForm(forms.ModelForm):
         }
 
 
+class PullRequestForm(forms.ModelForm):
+    class Meta:
+        model = PullRequest
+        fields = [
+            'title',
+            'description',
+            'source_branch',
+            'target_branch',
+
+        ]
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 3}),
+
+        }
+
+
+
+#------- Forms not link to relation model------------
+
 class RepoSearchForm(forms.Form):
     query = forms.CharField(
         required=False,
@@ -60,4 +79,7 @@ class CommitFilterForm(forms.Form):
         label='To',
         widget=forms.DateInput(attrs={'type':'date', 'class':'form-control'})
     )
+
+
+
 

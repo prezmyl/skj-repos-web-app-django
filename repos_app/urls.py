@@ -61,5 +61,36 @@ urlpatterns = [
         name='issue_delete'
     ),
 
+    # Pull Requests
+    path(
+        '<int:repo_pk>/pulls/',
+        views.pr_list,
+        name='pr_list'
+    ),
+    path(
+        '<int:repo_pk>/pulls/new/',
+        views.pr_create,
+        name='pr_create'
+    ),
+    path(
+        '<int:repo_pk>/pulls/<int:pk>/',
+        views.pr_detail,
+        name='pr_detail'
+    ),
+    path(
+        '<int:repo_pk>/pulls/<int:pk>/merge/',
+        views.pr_merge,
+        name='pr_merge'
+    ),
+    path(
+        '<int:repo_pk>/pulls/<int:pk>/edit/',
+        views.pr_update,
+        name='pr_update'
+    ),
+    path(
+        '<int:repo_pk>/pulls/<int:pk>/delete/',
+        views.pr_delete,
+        name='pr_delete'
+    ),
 
 ]

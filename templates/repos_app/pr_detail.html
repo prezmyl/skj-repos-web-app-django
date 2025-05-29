@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_list' %}">My Repositories</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_detail' pk=repo.pk %}">{{ repo.name }}</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:pr_list' repo_pk=repo.pk %}">Pull Requests</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      PR #{{ pr.pk }}
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>PR #{{ pr.pk }}: {{ pr.title }}</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <dl class="row">
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">{{ pr.description|linebreaks }}</dd>
+
+        <dt class="col-sm-3">Source Branch</dt>
+        <dd class="col-sm-9">{{ pr.source_branch }}</dd>
+
+        <dt class="col-sm-3">Target Branch</dt>
+        <dd class="col-sm-9">{{ pr.target_branch }}</dd>
+
+        <dt class="col-sm-3">Labels</dt>
+        <dd class="col-sm-9">
+          {% for label in pr.labels.all %}
+            <span class="badge me-1" style="background-color: {{ label.color }}">
+              {{ label.name }}
+            </span>
+          {% empty %}
+            <span class="text-muted">No labels</span>
+          {% endfor %}
+        </dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">
+          {% if pr.is_merged %}
+            <span class="badge bg-success">Merged</span>
+          {% else %}
+            <span class="badge bg-secondary">Open</span>
+          {% endif %}
+        </dd>
+
+        <dt class="col-sm-3">Created</dt>
+        <dd class="col-sm-9">{{ pr.created_at }}</dd>
+        <dt class="col-sm-3">Updated</dt>
+        <dd class="col-sm-9">{{ pr.updated_at }}</dd>
+      </dl>
+
+      {% if not pr.is_merged %}
+      <form method="post" action="{% url 'repos_app:pr_merge' repo_pk=repo.pk pk=pr.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-success mb-3">Merge Pull Request</button>
+      </form>
+      {% endif %}
+
+      <a class="btn btn-secondary"
+         href="{% url 'repos_app:pr_update' repo_pk=repo.pk pk=pr.pk %}">
+        Edit
+      </a>
+      <a class="btn btn-danger"
+         href="{% url 'repos_app:pr_delete' repo_pk=repo.pk pk=pr.pk %}">
+        Delete
+      </a>
+      <a class="btn btn-link"
+         href="{% url 'repos_app:pr_list' repo_pk=repo.pk %}">
+        Back to PRs
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

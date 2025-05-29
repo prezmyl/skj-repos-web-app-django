@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_list' %}">My Repositories</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_detail' pk=repo.pk %}">{{ repo.name }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      Pull Requests
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Pull Requests for {{ repo.name }}</h2>
+  <a class="btn btn-primary mb-3"
+     href="{% url 'repos_app:pr_create' repo_pk=repo.pk %}">
+    New Pull Request
+  </a>
+  <ul class="list-group">
+    {% for pr in prs %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'repos_app:pr_detail' repo_pk=repo.pk pk=pr.pk %}">
+          {{ pr.title }}
+        </a>
+        <span>
+          {% if pr.is_merged %}
+            <span class="badge bg-success me-2">Merged</span>
+          {% else %}
+            <span class="badge bg-secondary me-2">Open</span>
+          {% endif %}
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{% url 'repos_app:pr_update' repo_pk=repo.pk pk=pr.pk %}">
+            Edit
+          </a>
+          <a class="btn btn-sm btn-outline-danger"
+             href="{% url 'repos_app:pr_delete' repo_pk=repo.pk pk=pr.pk %}">
+            Delete
+          </a>
+        </span>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No pull requests yet</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
