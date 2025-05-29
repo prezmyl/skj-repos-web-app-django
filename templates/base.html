@@ -9,7 +9,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'repos_app:repo_list' %}">My Repos</a>
+      <a class="navbar-brand" href="{% url 'repos_app:repo_list' %}">Home</a>
       {% if user.is_authenticated %}
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
@@ -31,7 +31,15 @@
     </div>
   </nav>
 
-  {% block content %}{% endblock %}
+    <div class="container mt-3">
+    {% block breadcrumbs %}{% endblock %}
+  </div>
+
+  <div class="container mt-4">
+    {% block content %}{% endblock %}
+  </div>
+
+
 
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>

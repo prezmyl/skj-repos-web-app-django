@@ -1,4 +1,27 @@
 {% extends "base.html" %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_list' %}">My Repositories</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:repo_detail' pk=issue.repository.pk %}">
+        {{ issue.repository.name }}
+      </a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'repos_app:issue_list' repo_pk=issue.repository.pk %}">
+        Issues
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      #{{ issue.id }}
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
   <h2>Issue #{{ issue.id }}: {{ issue.title }}</h2>
