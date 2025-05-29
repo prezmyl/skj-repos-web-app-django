@@ -1,9 +1,9 @@
 from django import forms
-from .models import Repository, Commit
+from .models import Repository, Commit, Issue, Label
 
 
 # --------------------------------------
-#           FORMs definitions
+#           FORMs definitions -> validace a vykresleni
 # --------------------------------------
 
 class RepositoryForm(forms.ModelForm):
@@ -18,4 +18,12 @@ class CommitForm(forms.ModelForm):
     class Meta:
         model = Commit
         fields = ['message','hash']
+
+class IssueForm(forms.ModelForm):
+    class Meta:
+        model = Issue
+        fields = ['title', 'description', 'is_open', 'labels']
+        widgets = {
+            'labels': forms.CheckboxSelectMultiple,
+        }
 

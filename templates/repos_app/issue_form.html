@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>
+    {% if issue %}Edit Issue{% else %}New Issue{% endif %} in {{ repo.name }}
+  </h2>
+  <div class="row">
+    <div class="col-md-8">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">
+          {% if issue %}Save Changes{% else %}Create Issue{% endif %}
+        </button>
+        <a class="btn btn-link"
+           href="{% url 'repos_app:issue_list' repo_pk=repo.pk %}">
+          Cancel
+        </a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

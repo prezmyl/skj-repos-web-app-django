@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Issue #{{ issue.id }}: {{ issue.title }}</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <dl class="row">
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">{{ issue.description|linebreaks }}</dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">
+          {% if issue.is_open %}
+            <span class="badge bg-success">Open</span>
+          {% else %}
+            <span class="badge bg-secondary">Closed</span>
+          {% endif %}
+        </dd>
+
+        <dt class="col-sm-3">Labels</dt>
+        <dd class="col-sm-9">
+          {% for label in issue.labels.all %}
+            <span class="badge me-1" style="background-color: {{ label.color }}">
+              {{ label.name }}
+            </span>
+          {% empty %}
+            <span class="text-muted">No labels</span>
+          {% endfor %}
+        </dd>
+
+        <dt class="col-sm-3">Created</dt>
+        <dd class="col-sm-9">{{ issue.created_at }}</dd>
+        <dt class="col-sm-3">Updated</dt>
+        <dd class="col-sm-9">{{ issue.updated_at }}</dd>
+      </dl>
+
+      <a class="btn btn-secondary"
+         href="{% url 'repos_app:issue_update' repo_pk=repo.pk pk=issue.pk %}">
+        Edit
+      </a>
+      <a class="btn btn-danger"
+         href="{% url 'repos_app:issue_delete' repo_pk=repo.pk pk=issue.pk %}">
+        Delete
+      </a>
+      <a class="btn btn-link"
+         href="{% url 'repos_app:issue_list' repo_pk=repo.pk %}">
+        Back to issues
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

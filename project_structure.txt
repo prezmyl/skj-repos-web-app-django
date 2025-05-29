@@ -1,32 +1,64 @@
 .
-├── ERD
+├── db.sqlite3
 ├── github_url.txt
+├── log.txt
 ├── manage.py
 ├── project_structure.txt
 ├── repos
 │   ├── asgi.py
 │   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── settings.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── wsgi.cpython-312.pyc
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
 ├── repos_app
 │   ├── admin.py
 │   ├── forms.py
+│   ├── __init__.py
 │   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
 │   ├── models.py
+│   ├── __pycache__
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── forms.cpython-312.pyc
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── views.cpython-312.pyc
 │   ├── urls.py
 │   └── views.py
 ├── static
 │   ├── css
+│   │   └── bootstrap.min.css
+│   ├── favicon.ico
 │   ├── images
 │   └── js
+│       └── bootstrap.bundle.min.js
 ├── templates
 │   ├── base.html
+│   ├── registration
+│   │   ├── login.html
+│   │   └── signup.html
 │   └── repos_app
+│       ├── commit_detail.html
+│       ├── commit_form.html
+│       ├── commit_list.html
+│       ├── issue_delete.html
+│       ├── issue_detail.html
+│       ├── issue_form.html
+│       ├── issue_list.html
 │       ├── repo_delete.html
 │       ├── repo_detail.html
 │       ├── repo_form.html
 │       └── repo_list.html
 └── zadani_project.txt
 
-10 directories, 20 files
+14 directories, 48 files

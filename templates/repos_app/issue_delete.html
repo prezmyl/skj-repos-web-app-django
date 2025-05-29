@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>Confirm Delete</h1>
+  <p>
+    Are you sure you want to delete issue
+    “<strong>{{ issue.title }}</strong>” in repository
+    “<strong>{{ repo.name }}</strong>”?
+  </p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a class="btn btn-link"
+       href="{% url 'repos_app:issue_detail' repo_pk=repo.pk pk=issue.pk %}">
+      Cancel
+    </a>
+  </form>
+</div>
+{% endblock %}

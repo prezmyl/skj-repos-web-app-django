@@ -1,8 +1,7 @@
-from repos_app.forms import RepositoryForm
-from repos_app.models import Repository
-
+from repos_app.forms import RepositoryForm, IssueForm
 from repos_app.forms import CommitForm
 from repos_app.models import Commit
+from .models import Repository, Issue
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -10,7 +9,6 @@ from django.shortcuts import render, redirect
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .models import Repository
 from django.contrib.auth.decorators import login_required
 
 
@@ -25,6 +23,7 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
 
 
 # ------------------------------------------
@@ -85,6 +84,7 @@ def repo_delete(request, pk):
     return render(request, 'repos_app/repo_delete.html', {'repo': repo})
 
 
+
 # ------------------------------------------
 #           CRUD operations for Commit
 # ------------------------------------------
@@ -124,6 +124,108 @@ def commit_detail(request, repo_pk, hash):
 
 
 # ------------------------------------------
+#           CRUD operations for Issues
+# ------------------------------------------
+
+@login_required
+def issue_list(request, repo_pk):
+    repo = get_object_or_404(
+        Repository,
+        pk=repo_pk,
+        owner=request.user
+    )
+    issues = repo.issues.order_by('-created_at')
+    return render(request, 'repos_app/issue_list.html', {
+        'repo': repo,
+        'issues': issues,
+    })
+
+@login_required
+def issue_detail(request, repo_pk, pk):
+    issue = get_object_or_404(
+        Issue,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    return render(request, 'repos_app/issue_detail.html', {
+        'repo': issue.repository,
+        'issue': issue,
+    })
+
+@login_required
+def issue_create(request, repo_pk):
+    repo = get_object_or_404(
+        Repository,
+        pk=repo_pk,
+        owner=request.user
+    )
+    if request.method == 'POST':
+        form = IssueForm(request.POST)
+        if form.is_valid():
+            issue = form.save(commit=False)
+            issue.repository = repo
+            issue.author     = request.user
+            issue.save()
+            form.save_m2m()  # uloží ManyToMany (labels)
+            return redirect(
+                'repos_app:issue_detail',
+                repo_pk=repo.pk,
+                pk=issue.pk
+            )
+    else:
+        form = IssueForm()
+    return render(request, 'repos_app/issue_form.html', {
+        'repo': repo,
+        'form': form,
+    })
+
+@login_required
+def issue_update(request, repo_pk, pk):
+    issue = get_object_or_404(
+        Issue,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    if request.method == 'POST':
+        form = IssueForm(request.POST, instance=issue)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                'repos_app:issue_detail',
+                repo_pk=repo_pk,
+                pk=pk
+            )
+    else:
+        form = IssueForm(instance=issue)
+    return render(request, 'repos_app/issue_form.html', {
+        'repo': issue.repository,
+        'form': form,
+        'issue': issue,
+    })
+
+@login_required
+def issue_delete(request, repo_pk, pk):
+    issue = get_object_or_404(
+        Issue,
+        pk=pk,
+        repository__pk=repo_pk,
+        repository__owner=request.user
+    )
+    if request.method == 'POST':
+        issue.delete()
+        return redirect('repos_app:issue_list', repo_pk=repo_pk)
+    return render(request, 'repos_app/issue_delete.html', {
+        'repo':  issue.repository,
+        'issue': issue,
+    })
+
+
+
+
+
+# ------------------------------------------
 #           API calls -> machine readable endpoints
 # ------------------------------------------
 
@@ -156,3 +258,5 @@ def api_repo_detail(request, pk):
         'created_at':  r.created_at.isoformat(),
     }
     return JsonResponse(data)
+
+

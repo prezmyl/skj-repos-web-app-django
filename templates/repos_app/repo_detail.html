@@ -10,6 +10,11 @@
   <p><em>Created at {{ repo.created_at }}</em></p>
   <a class="btn btn-secondary" href="{% url 'repos_app:repo_update' repo.pk %}">Edit</a>
   <a class="btn btn-danger" href="{% url 'repos_app:repo_delete' repo.pk %}">Delete</a>
+  <hr>
+<a class="btn btn-outline-secondary"   href="{% url 'repos_app:issue_list' repo.pk %}">
+  🐛 View Issues
+</a>
+
   <a class="btn btn-link" href="{% url 'repos_app:repo_list' %}">Back to list</a>
   <hr>
   <a class="btn btn-outline-primary" href="{% url 'repos_app:commit_list' repo.pk %}">

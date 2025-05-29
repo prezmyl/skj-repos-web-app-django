@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Issues for {{ repo.name }}</h2>
+  <a class="btn btn-primary mb-3"
+     href="{% url 'repos_app:issue_create' repo_pk=repo.pk %}">
+    New Issue
+  </a>
+  <ul class="list-group">
+    {% for issue in issues %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'repos_app:issue_detail' repo_pk=repo.pk pk=issue.pk %}">
+          #{{ issue.id }} – {{ issue.title }}
+        </a>
+        <span>
+          {% if issue.is_open %}
+            <span class="badge bg-success me-2">Open</span>
+          {% else %}
+            <span class="badge bg-secondary me-2">Closed</span>
+          {% endif %}
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{% url 'repos_app:issue_update' repo_pk=repo.pk pk=issue.pk %}">
+            Edit
+          </a>
+          <a class="btn btn-sm btn-outline-danger"
+             href="{% url 'repos_app:issue_delete' repo_pk=repo.pk pk=issue.pk %}">
+            Delete
+          </a>
+        </span>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No issues yet</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
