@@ -37,3 +37,27 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'rows': 3}),
         }
+
+
+class RepoSearchForm(forms.Form):
+    query = forms.CharField(
+        required=False,
+        label='Search Repositories',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'repo name...',
+            'class': 'form-control',})
+    )
+
+
+class CommitFilterForm(forms.Form):
+    start_date = forms.DateField(
+        required=False,
+        label='From',
+        widget=forms.DateInput(attrs={'type':'date', 'class':'form-control'})
+    )
+    end_date = forms.DateField(
+        required=False,
+        label='To',
+        widget=forms.DateInput(attrs={'type':'date', 'class':'form-control'})
+    )
+

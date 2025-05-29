@@ -3,6 +3,17 @@
 <div class="container mt-4">
   <h1>My Repositories</h1>
   <a class="btn btn-primary mb-3" href="{% url 'repos_app:repo_create' %}">New Repository</a>
+<!-- search form  -->
+  <form class="row g-2 mb-3" method="get">
+    <div class="col-auto">
+      {{ form.query }}
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
+  <!-- list of repos  -->
   <ul class="list-group">
     {% for repo in repos %}
       <li class="list-group-item d-flex justify-content-between align-items-center">

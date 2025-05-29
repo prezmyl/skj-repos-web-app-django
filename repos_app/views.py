@@ -1,5 +1,5 @@
 
-from repos_app.forms import CommitForm, RepositoryForm, CommentForm, IssueForm
+from repos_app.forms import CommitForm, RepositoryForm, CommentForm, IssueForm, RepoSearchForm, CommitFilterForm
 from repos_app.models import Commit, Repository, Issue, Comment
 from .models import Repository, Issue, Comment
 
@@ -33,8 +33,17 @@ def signup(request):
 # vraci seznam repozitaru, ktere vlastni uzivatel
 @login_required
 def repo_list(request):
+    form = RepoSearchForm(request.GET)
     repos = Repository.objects.filter(owner=request.user)
-    return render(request, 'repos_app/repo_list.html', {'repos': repos})
+    if form.is_valid() and form.cleaned_data['query']:
+        repos = repos.filter(name__icontains=form.cleaned_data['query'])
+
+    return render(request,
+              'repos_app/repo_list.html',
+              {
+                  'repos': repos,
+                  'form': form,
+               })
 
 # nacte konkretni repo pokud exists
 @login_required
@@ -89,10 +98,24 @@ def repo_delete(request, pk):
 #           CRUD operations for Commit
 # ------------------------------------------
 
-@login_required
+
+
 def commit_list(request, repo_pk):
     repo = get_object_or_404(Repository, pk=repo_pk, owner=request.user)
-    return render(request,'repos_app/commit_list.html',{'repo':repo,'commits':repo.commits.all()})
+    form = CommitFilterForm(request.GET)
+    qs = repo.commits.order_by('-timestamp')
+    if form.is_valid():
+        sd = form.cleaned_data['start_date']
+        ed = form.cleaned_data['end_date']
+        if sd:
+            qs = qs.filter(timestamp__date__gte=sd)
+        if ed:
+            qs = qs.filter(timestamp__date__lte=ed)
+    return render(request, 'repos_app/commit_list.html', {
+        'repo': repo,
+        'commits': qs,
+        'filter_form': form,
+    })
 
 
 @login_required

@@ -6,6 +6,20 @@
      href="{% url 'repos_app:commit_create' repo.pk %}">
     New Commit
   </a>
+
+  <form class="row g-2 mb-3" method="get">
+    <div class="col-auto">
+      {{ filter_form.start_date }}
+    </div>
+    <div class="col-auto">
+      {{ filter_form.end_date }}
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-secondary">Filter</button>
+    </div>
+  </form>
+
+
   <ul class="list-group">
     {% for c in commits %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
