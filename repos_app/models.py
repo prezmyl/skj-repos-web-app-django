@@ -72,7 +72,6 @@ class PullRequest(models.Model):
     source_branch = models.CharField(max_length=100)
     target_branch = models.CharField(max_length=100)
     is_merged     = models.BooleanField(default=False)
-    #labels        = models.ManyToManyField(Label, blank=True, related_name='pull_requests')
     created_at    = models.DateTimeField(auto_now_add=True)
     updated_at    = models.DateTimeField(auto_now=True)
 

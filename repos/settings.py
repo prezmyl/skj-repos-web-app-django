@@ -17,6 +17,7 @@ INSTALLED_APPS = [
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
 
+LOGIN_REDIRECT_URL = '/repos/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

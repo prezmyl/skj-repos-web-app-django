@@ -1,6 +1,3 @@
-
-
-
 from repos_app.forms import (CommitForm,
                              RepositoryForm,
                              CommentForm,
@@ -225,7 +222,7 @@ def issue_create(request, repo_pk):
             issue.repository = repo
             issue.author     = request.user
             issue.save()
-            form.save_m2m()  # uloží ManyToMany (labels)
+            form.save_m2m()  # ulozi ManyToMany (labels)
             return redirect(
                 'repos_app:issue_detail',
                 repo_pk=repo.pk,

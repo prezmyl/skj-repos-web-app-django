@@ -28,14 +28,15 @@
     🔀 View Pull Requests
   </a>
   <hr>
+  <a class="btn btn-outline-primary" href="{% url 'repos_app:commit_list' repo.pk %}">
+    📦 View Commits
+  </a>
+  <hr>
   <a class="btn btn-outline-secondary"   href="{% url 'repos_app:issue_list' repo.pk %}">
     🐛 View Issues
   </a>
   <hr>
   <a class="btn btn-link" href="{% url 'repos_app:repo_list' %}">Back to list</a>
-  <hr>
-  <a class="btn btn-outline-primary" href="{% url 'repos_app:commit_list' repo.pk %}">
-    📦 View Commits
-  </a>
+
 </div>
 {% endblock %}
